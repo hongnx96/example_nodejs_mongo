@@ -2,8 +2,9 @@ const express = require('express')
 
 const logger = require('morgan')
 
+const connectDB = require('./db/connect')
 const mainRoutes = require('./server/routes/main')
-const connectDB = require('./db/connect');
+
 
 const app = express()
 const port = 3000

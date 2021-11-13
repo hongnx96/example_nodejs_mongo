@@ -1,18 +1,18 @@
 ###
 GET http://localhost:3000
 
-
+###
 POST http://localhost:3000/api/courses
 content-type: application/json
 
 {
-    "title": "HTML, CSS từ Zero đến Hero",
-    "description": "Trong khóa này chúng ta sẽ cùng nhau xây dựng giao diện 2 trang web là The Band & Shopee."
+    "title": "test",
+    "description": "test."
 }
 
 
 ###
-GET http://localhost:3000/api/courses/61894a8a2a91e648a8245585
+GET http://localhost:3000/api/courses/618fcaeca2ccf9570ac4fd22
 
 
 ###
@@ -30,4 +30,4 @@ content-type: application/json
 
 
 ###
-DELETE http://localhost:3000/api/courses/6189474c04dfbf2c08bb91f2
+DELETE http://localhost:3000/api/courses/618fce9d286b98f3219b7399

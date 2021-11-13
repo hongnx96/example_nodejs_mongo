@@ -1,105 +1,78 @@
 const mongoose = require('mongoose')
 const Course = require('./../models/course')
 
-const createCourse = (req, res) => {
-    //console.log(req.body);
-    const course = new Course({
-        _id: mongoose.Types.ObjectId(),
-        title: req.body.title,
-        description: req.body.description,
-    })
-
-    return course
-        .save()
-        .then((newCourse) => {
-            return res.status(200).json({
-                success: true,
-                message: 'New cause created successfully',
-                Course: newCourse
-            })
-
+const createCourse = async (req, res) => {
+    try {
+        const course = new Course({
+            _id: mongoose.Types.ObjectId(),
+            title: req.body.title,
+            description: req.body.description,
         })
-        .catch((err) => {
-            console.log(err)
-            res.status(500).json({
-                success: true,
-                message: 'Server error. Please try again.',
-                error: err.message,
-            })
+        const newCourse = await course.save()
+        return res.status(200).json({
+            success: true,
+            message: 'New cause created successfully',
+            Course: newCourse
         })
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-const getAllCourse = (req, res) => {
-    Course.find()
-        .select('_id title description')
-        .then((allCourse) => {
-            return res.status(200).json({
-                success: true,
-                message: 'A list of all course',
-                Course: allCourse,
-            })
+const getAllCourse = async (req, res) => {
+    try {
+        const allCourse = await Course.find().select('_id title description')
+        return res.status(200).json({
+            success: true,
+            message: 'A list of all course',
+            Course: allCourse,
         })
-        .catch((err) => {
-            res.status(500).json({
-                success: true,
-                message: 'Server error. Please try again.',
-                error: err.message,
-            })
-        })
+        
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
-const getSingleCourse = (req, res) => {
-    const id = req.params.courseId
-    Course.findById(id)
-        .then((singleCourse) => {
-            res.status(200).json({
-                success: true,
-                message: `More on ${singleCourse.title}`,
-                Course: singleCourse,
-            })
+const getSingleCourse = async (req, res) => {
+    try {
+        const id = req.params.courseId
+        const singleCourse = await Course.findById(id)
+        res.status(200).json({
+            success: true,
+            message: `More on ${singleCourse.title}`,
+            Course: singleCourse,
         })
-        .catch((err) => {
-            res.status(500).json({
-                success: true,
-                message: 'This coures does not exist',
-                error: err.message,
-            })
-        })
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-const updateCourse = (req, res) => {
-    const id = req.params.courseId
-    const updateObject = req.body
-    Course.update({ _id: id}, { $set: updateObject })
-        .then(() => {
-            res.status(200).json({
-                success: true,
-                message: 'Course is updated',
-                updateCourse: updateObject,
-            })
+const updateCourse = async (req, res) => {
+    try {
+        const id = req.params.courseId
+        const updateObject = req.body
+        await Course.updateOne({ _id: id}, { $set: updateObject })
+        res.status(200).json({
+            success: true,
+            message: 'Course is updated',
+            updateCourse: updateObject,
         })
-        .catch((err) => {
-            res.status(500).json({
-            success: false,
-            message: 'Server error. Please try again.'
-            });
-        })
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-const deleteCourse = (req, res) => {
-    const id = req.params.courseId
-    Course.findByIdAndRemove(id)
-        .exec()
-        .then(() => {
-            res.status(204).json({
-                success: true,
-            })
+const deleteCourse = async (req, res) => {
+    try {
+        const id = req.params.courseId
+        await Course.findByIdAndRemove(id).exec()
+        res.status(204).json({
+            success: true,
         })
-        .catch((err) => {
-            res.status(500).json({
-                success: false,
-            })
-        })
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports = {
